@@ -18,7 +18,7 @@ public class Launch : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-        Log("v1.0.10");
+        Log("v1.0.11");
         Log("Screen:" + Screen.width + "x" + Screen.height);
         //Screen.SetResolution(Screen.width, Screen.height,0);
 
@@ -53,13 +53,9 @@ public class Launch : MonoBehaviour
 
                     cameraImage.rectTransform.localEulerAngles = new Vector3(0, 0, webCamTex.videoRotationAngle);
 
-                    Log("rot:" + webCamTex.videoRotationAngle);
-
                     yield return new WaitForEndOfFrame();
 
-                    Log("webReslution1:" + webCamTex.width + "," + webCamTex.height);
-                    Log("webReslution2:" + webCamTex.requestedWidth + "," + webCamTex.requestedHeight);
-                    cameraImage.rectTransform.sizeDelta = new Vector2(webCamTex.requestedWidth, webCamTex.requestedHeight);
+                    cameraImage.rectTransform.sizeDelta = new Vector2(Screen.width, Screen.width);
 
                     break;
                 }
@@ -69,7 +65,7 @@ public class Launch : MonoBehaviour
 
             if(WebCamTexture.devices == null || WebCamTexture.devices.Length <= 0)
             {
-                t_tips.text += "No Cameras\n";
+                Log("No Cameras");
             }
         }
     }
