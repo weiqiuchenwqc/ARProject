@@ -14,7 +14,7 @@ public class Launch : MonoBehaviour
     private WebCamTexture webCamTex;
     private int index = 0;
 
-    public float aspect = 9f / 16f;
+    private float aspect = 9f / 16f;
     IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
@@ -59,7 +59,7 @@ public class Launch : MonoBehaviour
 
                     Log("webReslution1:" + webCamTex.width + "," + webCamTex.height);
                     Log("webReslution2:" + webCamTex.requestedWidth + "," + webCamTex.requestedHeight);
-                    cameraImage.rectTransform.sizeDelta = new Vector2(webCamTex.width, webCamTex.height);
+                    cameraImage.rectTransform.sizeDelta = new Vector2(webCamTex.requestedWidth, webCamTex.requestedHeight);
 
                     break;
                 }
