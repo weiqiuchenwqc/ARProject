@@ -15,16 +15,29 @@ public class Launch : MonoBehaviour
     private int index = 0;
 
     private float aspect = 9f / 16f;
-    IEnumerator Start()
+    void Start()
+    {
+        try
+        {
+            StartCoroutine(Cor_LaunchMobileCamera());
+        }
+        catch(System.Exception e)
+        {
+            Log("err message:" + e.Message + "\n" + e.StackTrace);
+        }
+    }
+
+    private IEnumerator Cor_LaunchMobileCamera()
     {
         yield return new WaitForEndOfFrame();
-        Log("v1.0.16");
-        Log("Screen:" + Screen.width + "x" + Screen.height);
+        //Log("v1.0.16");
+        //Log("Screen:" + Screen.width + "x" + Screen.height);
 
         //Screen.SetResolution(Screen.width, Screen.height,0);
+        //float ratio = (float)Screen.width / (float)Screen.height;
 
         //cameraImage.rectTransform.sizeDelta = new Vector2(Screen.height, width * Screen.width / height);
-        //cameraImage.rectTransform.sizeDelta = new Vector2(height * Screen.height / width, Screen.width);
+        //cameraImage.rectTransform.sizeDelta = new Vector2(Screen.width + Screen.width * (ratio - aspect) * 10, Screen.height);
 
         // 请求摄像头权限
         yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
@@ -36,7 +49,7 @@ public class Launch : MonoBehaviour
             {
                 WebCamDevice[] devices = WebCamTexture.devices;
 
-                
+
                 if (devices != null && devices.Length > 0)
                 {
                     //t_tips.text += "No Rear Camera\n";
@@ -45,7 +58,7 @@ public class Launch : MonoBehaviour
                     // 索引为1的摄像头一般为后置摄像头，参数分别为设备名称、图像宽度、高度、刷新率
 
 
-                    webCamTex = new WebCamTexture(devices[index].name,Screen.width, Screen.height, 60);
+                    webCamTex = new WebCamTexture(devices[index].name, Screen.width, Screen.height, 60);
                     // 实时获取摄像头的画面
                     webCamTex.Play();
 
@@ -58,21 +71,21 @@ public class Launch : MonoBehaviour
 
                     //cameraImage.rectTransform.sizeDelta = new Vector2(Screen.width , Screen.height);
 
-                    Log("wh1:" + webCamTex.width + "," + webCamTex.height);
-                    Log("wh2:" + webCamTex.requestedWidth + "," + webCamTex.requestedHeight);
+                    //Log("wh1:" + webCamTex.width + "," + webCamTex.height);
+                    //Log("wh2:" + webCamTex.requestedWidth + "," + webCamTex.requestedHeight);
                     float ratio = (float)Screen.width / (float)Screen.height;
-                    cameraImage.rectTransform.sizeDelta = new Vector2(Screen.width + Screen.width * (ratio - aspect), Screen.height);
+                    cameraImage.rectTransform.sizeDelta = new Vector2(Screen.width + Screen.width * (ratio - aspect) * 10, Screen.height);
 
-                    Log("rawImage:" + cameraImage.rectTransform.sizeDelta.x + "," + cameraImage.rectTransform.sizeDelta.y);
+                    //Log("rawImage:" + cameraImage.rectTransform.sizeDelta.x + "," + cameraImage.rectTransform.sizeDelta.y);
 
 
                     break;
                 }
-               
+
                 yield return new WaitForEndOfFrame();
             }
 
-            if(WebCamTexture.devices == null || WebCamTexture.devices.Length <= 0)
+            if (WebCamTexture.devices == null || WebCamTexture.devices.Length <= 0)
             {
                 Log("No Cameras");
             }
@@ -81,7 +94,7 @@ public class Launch : MonoBehaviour
 
     private void Log(string str)
     {
-        //t_tips.text += str + "\n";
+        t_tips.text += str + "\n";
     }
 
     //切换前后摄像头
