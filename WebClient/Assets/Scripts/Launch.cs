@@ -30,16 +30,15 @@ public class Launch : MonoBehaviour
     private IEnumerator Cor_LaunchMobileCamera()
     {
         yield return new WaitForEndOfFrame();
-        //Log("v1.0.16");
-        //Log("Screen:" + Screen.width + "x" + Screen.height);
+        Log("v1.0.16");
+        Log("Screen:" + Screen.width + "x" + Screen.height);
 
         //Screen.SetResolution(Screen.width, Screen.height,0);
         //float ratio = (float)Screen.width / (float)Screen.height;
 
-        //cameraImage.rectTransform.sizeDelta = new Vector2(Screen.height, width * Screen.width / height);
-        //cameraImage.rectTransform.sizeDelta = new Vector2(Screen.width + Screen.width * (ratio - aspect) * 10, Screen.height);
-
+     
         // 请求摄像头权限
+       
         yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
         // 如果获取到摄像头权限
         if (Application.HasUserAuthorization(UserAuthorization.WebCam))
@@ -74,9 +73,9 @@ public class Launch : MonoBehaviour
                     //Log("wh1:" + webCamTex.width + "," + webCamTex.height);
                     //Log("wh2:" + webCamTex.requestedWidth + "," + webCamTex.requestedHeight);
                     float ratio = (float)Screen.width / (float)Screen.height;
-                    cameraImage.rectTransform.sizeDelta = new Vector2(Screen.width + Screen.width * (ratio - aspect) * 10, Screen.height);
+                    cameraImage.rectTransform.sizeDelta = new Vector2(Screen.width + Mathf.Clamp(Screen.width * (ratio - aspect) * 10, 0, (float)Screen.width / 2), Screen.height);
 
-                    //Log("rawImage:" + cameraImage.rectTransform.sizeDelta.x + "," + cameraImage.rectTransform.sizeDelta.y);
+                    Log("rawImage:" + cameraImage.rectTransform.sizeDelta.x + "," + cameraImage.rectTransform.sizeDelta.y);
 
 
                     break;
@@ -88,6 +87,11 @@ public class Launch : MonoBehaviour
             if (WebCamTexture.devices == null || WebCamTexture.devices.Length <= 0)
             {
                 Log("No Cameras");
+#if UNITY_EDITOR
+                float ratio = (float)Screen.width / (float)Screen.height;
+                cameraImage.rectTransform.sizeDelta = new Vector2(Screen.width + Mathf.Clamp(Screen.width * (ratio - aspect) * 10,0,(float)Screen.width / 2), Screen.height);
+                Log("rawImage:" + cameraImage.rectTransform.sizeDelta.x + "," + cameraImage.rectTransform.sizeDelta.y);
+#endif
             }
         }
     }
