@@ -7,21 +7,28 @@ using UnityEngine.UI;
 public class Launch : MonoBehaviour
 {
     [SerializeField]
-    private RawImage cameraImage;
+    protected RawImage cameraImage;
 
     [SerializeField]
-    private Text t_tips;
+    protected Text t_tips;
     private WebCamTexture webCamTex;
     private int index = 0;
 
     private float aspect = 9f / 16f;
+
+    protected GameObject lastCardGo;
     void Start()
+    {
+        this.OnStart();
+    }
+
+    protected virtual void OnStart()
     {
         try
         {
             StartCoroutine(Cor_LaunchMobileCamera());
         }
-        catch(System.Exception e)
+        catch (System.Exception e)
         {
             Log("err message:" + e.Message + "\n" + e.StackTrace);
         }
@@ -30,7 +37,7 @@ public class Launch : MonoBehaviour
     private IEnumerator Cor_LaunchMobileCamera()
     {
         yield return new WaitForEndOfFrame();
-        Log("v1.0.16");
+        Log("v1.0.17");
         Log("Screen:" + Screen.width + "x" + Screen.height);
 
         //Screen.SetResolution(Screen.width, Screen.height,0);
@@ -96,7 +103,7 @@ public class Launch : MonoBehaviour
         }
     }
 
-    private void Log(string str)
+    protected virtual void Log(string str)
     {
         t_tips.text += str + "\n";
     }
@@ -123,6 +130,21 @@ public class Launch : MonoBehaviour
     }
 
 
+    public void ChangeCardGo(GameObject cardGo)
+    {
+        if(this.lastCardGo != null)
+        {
+            this.lastCardGo.SetActive(false);
+        }
+
+        if (cardGo != null)
+        {
+            cardGo.SetActive(true);
+            this.lastCardGo = cardGo;
+        }
+
+    }
+    
 
     private void OnApplicationQuit()
     {
