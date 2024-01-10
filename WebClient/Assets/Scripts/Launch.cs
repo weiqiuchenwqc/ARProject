@@ -11,6 +11,13 @@ public class Launch : MonoBehaviour
 
     [SerializeField]
     protected Text t_tips;
+
+    [SerializeField] 
+    protected Image img_sel;
+
+    [SerializeField]
+    protected Text t_name;
+
     private WebCamTexture webCamTex;
     private int index = 0;
 
@@ -143,6 +150,33 @@ public class Launch : MonoBehaviour
             this.lastCardGo = cardGo;
         }
 
+       
+    }
+
+    public void SetSelPos(GameObject selPos)
+    {
+        if (this.img_sel != null)
+        {
+            this.img_sel.transform.localPosition = selPos.transform.localPosition + Vector3.up * 20;
+        }
+    }
+
+    public void OnShow(GameObject go)
+    {
+        go?.SetActive(true);
+    }
+
+    public void OnHide(GameObject go)
+    {
+        go.SetActive(false);
+    }
+
+    public void SetCardName(string name)
+    {
+        if (t_name != null)
+        {
+            t_name.text = name;
+        }
     }
     
 
