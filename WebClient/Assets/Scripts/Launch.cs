@@ -23,7 +23,10 @@ public class Launch : MonoBehaviour
 
     private float aspect = 9f / 16f;
 
-    protected GameObject lastCardGo;
+    [SerializeField]
+    public GameObject lastCardGo;
+
+    protected int mode = 0;
     void Start()
     {
         this.OnStart();
@@ -107,7 +110,11 @@ public class Launch : MonoBehaviour
                 Log("rawImage:" + cameraImage.rectTransform.sizeDelta.x + "," + cameraImage.rectTransform.sizeDelta.y);
 #endif
             }
+
         }
+
+        this.mode = 1;
+
     }
 
     protected virtual void Log(string str)
@@ -176,6 +183,25 @@ public class Launch : MonoBehaviour
         if (t_name != null)
         {
             t_name.text = name;
+        }
+    }
+
+    public void SwithMode(int mode)
+    {
+        if(this.mode == mode)
+        {
+            return;
+        }
+
+        if(this.mode == 1 && mode == 2)
+        {
+            this.mode = 2;
+            webCamTex?.Stop();
+            this.cameraImage.texture = null;
+        }
+        else if(this.mode == 2 && mode == 1)
+        {
+            this.OnStart();
         }
     }
     
